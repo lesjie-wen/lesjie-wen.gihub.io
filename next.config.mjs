@@ -17,13 +17,13 @@ const nextConfig = {
 };
 
 const withMDX = createMDX({
-  // 在这里添加 markdown 插件（如果需要）
+  // mdx config
 });
 
-// 合并 MDX 配置和 Next.js 配置
+
 const finalConfig = withMDX(nextConfig);
 
-// 导出一个函数，而不是直接导出配置对象
+
 export default () => {
   const env = process.env.NODE_ENV;
   if (env === 'production') {
