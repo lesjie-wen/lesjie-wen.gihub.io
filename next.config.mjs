@@ -3,26 +3,31 @@ import createMDX from "@next/mdx";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  // 如果您使用了图片优化功能,可能还需要添加以下配置
   images: {
     unoptimized: true,
   },
-  // Configure `pageExtensions` to include markdown and MDX files
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
-  // Optionally, add any other Next.js config below
   webpack: (config, { isServer }) => {
     config.module.rules.push({
       test: /\.bib$/,
       use: "raw-loader",
     });
-
     return config;
   },
 };
 
 const withMDX = createMDX({
-  // Add markdown plugins here, as desired
+  // 在这里添加 markdown 插件（如果需要）
 });
 
-// Merge MDX config with Next.js config
-export default withMDX(nextConfig);
+// 合并 MDX 配置和 Next.js 配置
+const finalConfig = withMDX(nextConfig);
+
+// 导出一个函数，而不是直接导出配置对象
+export default () => {
+  const env = process.env.NODE_ENV;
+  if (env === 'production') {
+    return { ...finalConfig, output: 'export' };
+  }
+  return finalConfig;
+};
