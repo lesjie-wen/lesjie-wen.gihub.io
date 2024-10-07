@@ -95,6 +95,72 @@ Open http://localhost:3000 in your browser to see the result.
 
 [![Deployed on Zeabur](https://zeabur.com/deployed-on-zeabur-dark.svg)](https://zeabur.com?referralCode=anxndsgn&utm_source=anxndsgn&utm_campaign=oss)
 
+## 使用github actions部署问题合集
+1. build阶段Setup Pages报错，对应nextjs.yml工作流中的Setup Pages部分
+~~~
+Run actions/configure-pages@v5
+Injecting property=output and value=export in:
+import createMDX from "@next/mdx";
+
+/** @type {import('next').NextConfig} */
+
+let assetPrefix = '';
+let basePath = '';
+
+const isGithubActions = process.env.GITHUB_ACTIONS || false
+if (isGithubActions) {
+  const repo = process.env.GITHUB_REPOSITORY.replace(/.*?\//, '')
+  assetPrefix = `/${repo}/`
+  basePath = `/${repo}`
+}
+
+const nextConfig = {
+ output: 'export',
+  assetPrefix: assetPrefix,
+  basePath: basePath,
+  images: {
+    unoptimized: true,
+  },
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  webpack: (config, { isServer }) => {
+    config.module.rules.push({
+      test: /\.bib$/,
+      use: "raw-loader",
+    });
+    return config;
+  },
+};
+
+const withMDX = createMDX({
+  // mdx config
+});
+
+const finalConfig = withMDX(nextConfig);
+
+export default () => {
+  const env = process.env.NODE_ENV;
+  if (env === 'production') {
+    return { ...finalConfig, output: 'export' };
+  }
+  return finalConfig;
+};
+
+Error: TypeError: error must be an instance of Error
+~~~
+解决办法，参考[issue](https://github.com/actions/configure-pages/issues/107#issuecomment-2024122120)：
+~~~
+- name: Setup Pages
+  uses: actions/configure-pages@v4
+  with:
+    static_site_generator: next
+    generator_config_file: ./next.config.mjs
+~~~
+2. 如果是部署后网页排版有问题，样式不能正确加载
+解决办法，参考[web](https://cloud.tencent.com/developer/article/2366899)，在next.config.mjs文件中设置路径：
+~~~
+let assetPrefix = '/';
+let basePath = '';
+~~~
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
