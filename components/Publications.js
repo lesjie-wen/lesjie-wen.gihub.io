@@ -7,7 +7,7 @@ function authorProcess(authorsStr, personalInfo) {
   const authors = authorsStr.split('and');
   const boldedAuthors = authors.map((author) => {
     author = author.trim().split(', ').reverse().join(' ').trim();
-    return author === personalInfo ? `**${personalInfo}**` : author;
+    return author.includes(personalInfo) ? `**${author}**` : author;
   });
   return boldedAuthors.join(', ');
 }
