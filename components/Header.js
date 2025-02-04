@@ -36,11 +36,11 @@ export default function Header() {
 
   return (
     <div
-      className={`flex flex-col fixed top-0 w-full bg-neutral-50/80 dark:bg-neutral-800/30 backdrop-blur-lg content-start `}
+      className={`flex flex-col fixed top-0 w-full bg-neutral-50/80 dark:bg-neutral-800/30 backdrop-blur-lg content-start z-50`}
     >
-      <nav className="flex justify-between m-auto md:w-[60rem] w-full py-4 text-lg px-4 h-auto">
+      <nav className="flex justify-between m-auto md:w-[60rem] w-full py-4 text-lg px-4 h-auto relative">
         <Button asChild variant="ghost">
-          <Link href={'/'} className="font-semibold">
+          <Link href={'/'} className="font-semibold relative z-50">
             {personalInfo.name}
           </Link>
         </Button>

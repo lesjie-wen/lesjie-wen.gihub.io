@@ -22,16 +22,17 @@ export default function Publications({ bibtex }) {
         const isArxiv = item.entryTags.publisher?.toLowerCase().includes('arxiv');
 
         return (
-          <li key={item.entryTags.title} className="flex gap-6 w-full">
-            <div className="w-1/4 flex items-center justify-center relative -z-20"> {/* 添加 relative 和 z-0 */}
-              <div className="relative inline-block group"> {/* 移除 overflow-hidden */}
-                <div className="overflow-hidden"> {/* 新增一个 div 用于控制图片溢出 */}
+          <li key={item.entryTags.title} className="flex gap-6 w-full group transition-all duration-300">
+            <div className="w-1/4 group-hover:w-[23rem] transition-all duration-300">
+              <div className="relative w-full cursor-pointer">
+                <div className="">
                   {item.entryTags.video ? (
                     <video
                       autoPlay
                       muted
                       loop
-                      className="w-full h-full object-cover transition-all duration-300 ease-in-out group-hover:scale-110"
+                      className="rounded-lg w-full object-cover transition-transform duration-500 group-hover:scale-115 z-index-10"
+                      style={{ maxHeight: '20rem' }}
                     >
                       <source src={item.entryTags.video} type="video/mp4" />
                       您的浏览器不支持视频标签。
@@ -53,7 +54,7 @@ export default function Publications({ bibtex }) {
                 )}
               </div>
             </div>
-            <div className="w-3/4">
+            <div className="w-3/4 group-hover:w-[42rem] transition-all duration-300">
               <h2 className="text-xl font-semibold mb-2 dark:text-neutral-50">
                 {item.entryTags.url ? (
                   <a href={item.entryTags.url} className="underline">
